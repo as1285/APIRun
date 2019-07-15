@@ -1,6 +1,6 @@
 import requests
-from APIRun.conf.settings import *
-from APIRun.common.get_data import GetData
+from conf.settings import *
+from common.get_data import GetData
 
 
 # 获取各个平台的token ,初始化header登录状态

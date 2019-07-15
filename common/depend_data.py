@@ -1,9 +1,9 @@
-from APIRun.common.operation_excel import OperationExcel
-from APIRun.common.run_method import RunMethod
-from APIRun.common.get_data import GetData
+from common.operation_excel import OperationExcel
+from common.run_method import RunMethod
+from common.get_data import GetData
 import json
 from jsonpath_rw import jsonpath,parse
-from APIRun.conf.set_token import Get_Token
+from conf.set_token import Get_Token
 class DependdentData:
     def __init__(self,case_id):
         self.case_id = case_id

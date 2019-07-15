@@ -1,11 +1,11 @@
 
-from APIRun.common.run_method import RunMethod
-from APIRun.common.get_data import GetData
-from APIRun.common.assert_result import CommonUtil
+from common.run_method import RunMethod
+from common.get_data import GetData
+from common.assert_result import CommonUtil
 import json
-from APIRun.common.depend_data import DependdentData
-from APIRun.conf.send_email import SendEmail
-from APIRun.conf.set_token import Get_Token
+from common.depend_data import DependdentData
+from conf.send_email import SendEmail
+from conf.set_token import Get_Token
 from time import sleep
 class RunTest:
     def __int__(self):

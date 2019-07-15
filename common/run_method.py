@@ -1,6 +1,6 @@
 import requests
 from json import dumps
-from APIRun.logs.logger import Logger
+from logs.logger import Logger
 
 logger = Logger().logger
 class RunMethod:

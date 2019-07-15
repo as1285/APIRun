@@ -1,6 +1,6 @@
-from APIRun.common.operation_excel  import OperationExcel
-from APIRun.conf import data_conf
-from APIRun.common.openration_json import  OperationJson
+from common.operation_excel  import OperationExcel
+from conf import data_conf
+from common.openration_json import  OperationJson
 
 import json
 class GetData:

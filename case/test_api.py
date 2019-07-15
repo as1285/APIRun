@@ -2,8 +2,8 @@ import unittest
 import ddt
 import os
 import requests
-from APIRun import  run
-from APIRun.common import readexcel
+import  run
+from common import readexcel
 
 
 # 获取demo_api.xlsx路径

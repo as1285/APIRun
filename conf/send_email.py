@@ -2,7 +2,7 @@
 import smtplib
 from email.mime.text import MIMEText
 import email
-from APIRun.conf.settings import *
+from conf.settings import *
 from email.mime.multipart import MIMEMultipart
 from email.utils import *
 from email.header import Header

@@ -1,4 +1,4 @@
-from APIRun.logs.logger import Logger
+from logs.logger import Logger
 
 logger = Logger().logger
 class SqlData:

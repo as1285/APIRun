@@ -1,5 +1,5 @@
 #查看数据库，后期扩展重点，数据来源
-from APIRun.conf.settings import *
+from conf.settings import *
 import pymysql
 
 class MySQLOperate():

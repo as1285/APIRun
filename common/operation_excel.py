@@ -1,5 +1,5 @@
 import xlrd
-from APIRun.conf.settings import *
+from conf.settings import *
 from xlutils.copy import copy
 class OperationExcel:
     def __init__(self,file_name=None,sheet_id=None):
