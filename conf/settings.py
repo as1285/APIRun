@@ -19,7 +19,7 @@ app_phone = '13430664102'
 app_host = 'https://rtapi-qa002.blissmall.net/'
 
 #微商城登录
-wei_phone='13267166832'
+wei_phone='11111111111'
 wei_host = 'https://rtapi-qa002.blissmall.net/'
 
 #骑手app

@@ -13,8 +13,7 @@ class DependdentData:
     #执行依赖结果，获取数据
     def run_dependdent(self):
         row_num=OperationExcel().get_row_num(self.case_id)
-        print(self.case_id,'case_id')
-        url = GetData().get_request_url(row_num)
+        url = Get_Token().get_url(client_type=GetData().get_client_type(row_num), api=GetData().get_api(row_num))
         method = GetData().get_request_method(row_num)
         data = GetData().get_data(row_num)
         data = json.loads(data)
@@ -25,8 +24,10 @@ class DependdentData:
     def get_data_for_key(self,row):
         depend_data = GetData().get_depend_key(row)
         respond_data = self.run_dependdent()
-        print(respond_data)
         json_exe = parse(depend_data)
-        print(json_exe,'json_exe')
         madle=json_exe.find(respond_data)
-        return [math.value for math in madle][0]
+        try:
+            print('获取依赖参数成功：',[math.value for math in madle][0])
+            return [math.value for math in madle][0]
+        except IndexError:
+            print('获取依赖参数失败',respond_data['message'])

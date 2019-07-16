@@ -16,6 +16,10 @@ class RunMethod:
 
     def send_get(self, url, header, data):
         try:
+            print(1,url,data)
+            if data:
+                url = url + tuple(data.values())[0]
+                print(url,1)
             res = requests.get( url=url, json=data, headers=header)
             self.api_log('get',url=url, json=data, headers=header,
                          code=res.status_code, res_text=res.text, res_header=res.headers)

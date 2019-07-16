@@ -25,7 +25,7 @@ class Test_api(unittest.TestCase):
 
     @ddt.data(*testdata)
     def test_api(self, data):
-        run.RunTest
+        os.system("python run.py")
 
 
 

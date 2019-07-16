@@ -108,16 +108,19 @@ class Get_Token:
         return header
 
     def wei_token(self):
-        header = {'accept': 'application/json',
-                  'accept-encoding': 'gzip, deflate',
-                  'accept-charset': 'UTF-8,*;q=0.5',
-                  "client-id": "1438151553",
-                  "channel-id": "1301",
-                  "origin": "https://m-qa002.xfxb.net",
-                  "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.4(0x17000428) NetType/WIFI Language/zh_CN",
-                  "sign": "190712105303494M8hiJ1LeFwor4deGf33sw0orrs/izMu0PgrLOqBVuZE="
-
-                  }
+        header = {
+            "client-id": "10",
+            "channel-id": "1301",
+            'Content-Type': 'application/json',
+            "content-type": "application/json;charset=UTF-8",
+            "accept": "application/json, text/plain, */*",
+            "accept-language": "zh-cn",
+            "accept-encoding": "br, gzip, deflate",
+            "origin": "https://m-qa002.xfxb.net",
+            "referer": "https://m-qa002.xfxb.net/mall/order/confirm?selectedAddressId=596037807818575872",
+            "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.4(0x17000428) NetType/WIFI Language/zh_CN",
+            "cookie"	:"_ga=GA1.2.683642079.1561795908; _gid=GA1.2.1366457574.1563246959; token=a7234ef9-a8c0-4ae2-96ed-ee9df4faf444"
+        }
         data = {
             "mobile": "13267166832",
             "typeCode": "wechatH5UserLogin"
@@ -125,13 +128,17 @@ class Get_Token:
         data["mobile"] = self.wei_phone
         url = 'https://rtapi-qa002.blissmall.net/apis/authc/wap/sms/sendSmsCodeAnonymous'
         self.run_main('post', url, data, header)
+
         url = 'https://m-qa002.xfxb.net/restapi/auth/wap/loginBySms'
         data = {
-            "mobile": "13267166832",
-            "smsCode": "123456"
+            "mobile": "11111111111",
+            "smsCode": "123456",
         }
+        data["mobile"] = self.wei_phone
         res = self.run_main('post', url, data, header)
+        print(res.json())
         header['token'] = res.json()['data']["authMemberInfo"]['token']
+
         headers['wei'] = header
         return header
 
