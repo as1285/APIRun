@@ -32,29 +32,36 @@ class SendEmail:
         message = MIMEMultipart()
         message['Subject'] = sub
         message['From'] = user
-        message['to'] = ';'.join(user_list)
+        message['to'] = ':'.join(user_list)
         message.attach(MIMEText(content, 'html', 'utf-8'))
+        print(':'.join(user_list))
         # 构造附件1，传送当前目录下的 test.txt 文件
         att1 = MIMEText(open(os.path.join(BASE_PATH,'report/result.html'), 'rb').read(), 'base64', 'utf-8')
         att1["Content-Type"] = 'application/octet-stream'
         # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
         att1["Content-Disposition"] = 'attachment; filename="result.html"'
         message.attach(att1)
+        att2 = MIMEText(open(os.path.join(BASE_PATH, 'logs/all.logs'), 'rb').read(), 'base64', 'utf-8')
+        att2["Content-Type"] = 'application/octet-stream'
+        att2["Content-Disposition"] = 'attachment; filename="all.logs"'
+        message.attach(att2)
         server = smtplib.SMTP()
         server.connect(email_host)
         server.login(send_user, password)
         server.sendmail(user, user_list, message.as_string())
         server.close()
 
-    def send_main(self, pass_list, fail_list):
-        pass_num = float(len(pass_list))
-        fail_num = float(len(fail_list))
-        print(pass_num)
-        count_num = pass_num + fail_num
-        pass_result = '%.2f%%' % (pass_num / count_num * 100)
-        fail_result = '%.2f%%' % (fail_num / count_num * 100)
+    def send_main(self):
+        # pass_num = float(len(pass_list))
+        # fail_num = float(len(fail_list))
+        # count_num = pass_num + fail_num
+        # pass_result = '%.2f%%' % (pass_num / count_num * 100)
+        # fail_result = '%.2f%%' % (fail_num / count_num * 100)
         user_list = self.user_list
         # 邮件正文内容
         sub = '这是一封测试邮件'
-        content ='此次接口测试个数为%d，通过数为%d,通过率为%s,失败率为%s'%(count_num, pass_num, pass_result, fail_result)
+        f = open(os.path.join(BASE_PATH, 'report/result.html'), 'rb')
+        content = f.read()
+        f.close()
+        # content ='此次接口测试个数为%d，通过数为%d,通过率为%s,失败率为%s'%(count_num, pass_num, pass_result, fail_result)
         self.send_email(user_list, sub, content)

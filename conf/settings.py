@@ -15,7 +15,7 @@ DB_IP = '39.108.4.250'
 PORT = 29383
 
 #新零售APP登录
-app_phone = '13430664102'
+app_phone = '13267166832'
 app_host = 'https://rtapi-qa002.blissmall.net/'
 
 #微商城登录
@@ -32,5 +32,5 @@ cloud_host = 'https://retailadmin-qa002.blissmall.net/'
 email_host = 'smtp.qq.com'
 send_user = '498771018@qq.com'
 password = 'ikcwnwolsdzjbicf'#邮箱的smtp验证码,不是 邮箱密码
-user_list = ['dong1285@126.com']#收件人列表，后面用;隔开
+user_list = ['dong1285@126.com;dong1285@qq.com']#收件人列表，后面用;隔开
 

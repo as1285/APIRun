@@ -1,7 +1,7 @@
 import requests
 from conf.settings import *
 from common.get_data import GetData
-
+from time import  sleep
 
 # 获取各个平台的token ,初始化header登录状态
 class Get_Token:
@@ -36,29 +36,34 @@ class Get_Token:
 
     def app_token(self):  # 发短信验证码登录
         url = 'https://rtapi-qa002.blissmall.net/apis/authc/anon/sms/V1.0.0/sendSmsCode'
-        header = {'client-id': 'b34749d6aa46a3f1', 'channel-id': '1102', 'version': '2.0.0',
-                  'sign': '190618155913287 Iclvn+La9mJIFhLU3Zl2inxpyllSLkCnAwVZCrecpkc=',
+        header = {'client-id': 'A8D45196C1B24F24BD373D01F86723C4', 'channel-id': '1102',
+                  'sign': '190717173620303GJg8lRRlXE6fHE+vs7Czc2QhzPc0gxKabxOgRL4Tfb/dMq31+4rqr7g02Q3doaQF',
                   'content-type': 'application/json', 'charset': 'UTF-8', 'content-length': '83',
-                  'accept-encoding': 'gzip', 'user-agent': 'okhttp/3.11.0'
+                  'accept-encoding': 'gzip',
+                 'user-agent':	'XFGProject/2.0.0 (iPhone; iOS 12.3.1; Scale/3.00)',
+                  "token":'aa9fa822-2613-42b5-8ae6-184eeaddc93d'
                   }
         data = {
-            "clientId": "b34749d6aa46a3f1",
-            "mobile": "11111111111",
-            "typeCode": "retailUserLogin"
-        }
+	"mobile": "13267166832",
+	"typeCode": "retailUserLogin"
+}
         data["mobile"] = self.app_phone
-        res = self.run_main('post', url, data, header)
-
-        url = 'https://rtapi-qa002.blissmall.net/apis/auth/userApp/V1.0.0/loginBySms'
-        data = {
-            "loginType": 1,
-            "mobile": "11111111111",
-            "smsCode": "123456"
-        }
-        data["mobile"] = self.app_phone
-        re = self.run_main('post', url, data, header)
-        header['token'] = re.json()['data']["authMemberInfo"]['token']
-        self.userId = re.json()['data']["authMemberInfo"]['userId']
+        self.run_main('post', url, data, header)
+        try:
+            url = 'https://rtapi-qa002.blissmall.net/apis/auth/userApp/V1.0.0/loginBySms'
+            data ={
+        "smsCode": "123456",
+        "mobile": "13267166832",
+        "loginType": "1"
+    }
+            data["mobile"] = self.app_phone
+            re = self.run_main('post', url, data, header)
+            header['token'] = re.json()['data']["authMemberInfo"]['token']
+            self.userId = re.json()['data']["authMemberInfo"]['userId']
+            headers['app'] = header
+            return header
+        except:
+            print('APP登录失败')
         headers['app'] = header
         return header
 
@@ -117,9 +122,9 @@ class Get_Token:
             "accept-language": "zh-cn",
             "accept-encoding": "br, gzip, deflate",
             "origin": "https://m-qa002.xfxb.net",
-            "referer": "https://m-qa002.xfxb.net/mall/order/confirm?selectedAddressId=596037807818575872",
+            "referer": "https://m-qa002.xfxb.net/mall/order/confirm",
             "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.4(0x17000428) NetType/WIFI Language/zh_CN",
-            "cookie"	:"_ga=GA1.2.683642079.1561795908; _gid=GA1.2.1366457574.1563246959; token=a7234ef9-a8c0-4ae2-96ed-ee9df4faf444"
+            "cookie":"_ga=GA1.2.1005703224.1559028545"
         }
         data = {
             "mobile": "13267166832",
@@ -136,7 +141,6 @@ class Get_Token:
         }
         data["mobile"] = self.wei_phone
         res = self.run_main('post', url, data, header)
-        print(res.json())
         header['token'] = res.json()['data']["authMemberInfo"]['token']
 
         headers['wei'] = header
@@ -164,6 +168,7 @@ class Get_Token:
 
     def get_header(self, row):
         client_type = GetData().get_client_type(row)
+        print(client_type)
         if not headers.__contains__(client_type):
             self.save_token(client_type)
         return headers[client_type]
