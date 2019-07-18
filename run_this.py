@@ -19,6 +19,7 @@ def run_case(all_case, reportpath=report_path):
     '''执行所有的用例, 并把结果写入测试报告'''
     htmlreport = reportpath+r"\result.html"
     print("测试报告生成地址：%s"% htmlreport)
+
     fp = open(htmlreport, "wb")
     runner = HTMLTestRunner_api.HTMLTestRunner(stream=fp,
                                                verbosity=2,
@@ -32,4 +33,5 @@ def run_case(all_case, reportpath=report_path):
 if __name__ == "__main__":
     cases = add_case()
     run_case(cases)
+
     SendEmail().send_main()

@@ -6,7 +6,8 @@ from conf.settings import *
 from email.mime.multipart import MIMEMultipart
 from email.utils import *
 from email.header import Header
-
+from bs4 import BeautifulSoup
+import html5lib
 
 email.mime.multipart.MIMEMultipart(_subtype='mixed', boundary=None, _subparts=None)
 
@@ -28,13 +29,13 @@ class SendEmail:
         self.user_list = user_list
 
     def send_email(self, user_list, sub, content):
-        user = '唐冬' + '<' + send_user + '>'
+        user = send_user
         message = MIMEMultipart()
         message['Subject'] = sub
         message['From'] = user
         message['to'] = ':'.join(user_list)
         message.attach(MIMEText(content, 'html', 'utf-8'))
-        print(':'.join(user_list))
+        print(message['to'])
         # 构造附件1，传送当前目录下的 test.txt 文件
         att1 = MIMEText(open(os.path.join(BASE_PATH,'report/result.html'), 'rb').read(), 'base64', 'utf-8')
         att1["Content-Type"] = 'application/octet-stream'
@@ -60,8 +61,19 @@ class SendEmail:
         user_list = self.user_list
         # 邮件正文内容
         sub = '这是一封测试邮件'
-        f = open(os.path.join(BASE_PATH, 'report/result.html'), 'rb')
+        f = open(os.path.join(BASE_PATH, 'report/result.html'), 'r',encoding='UTF-8')
         content = f.read()
         f.close()
+        soup = BeautifulSoup(content, 'html5lib')
+        soup.find('p', id='show_detail_line').decompose()
+        links = soup.find_all('a')
+        for n in links:
+            n.decompose()
+        # f = open(os.path.join(BASE_PATH, 'report/result.html'), 'w',encoding='UTF-8')
+        # f.write(soup.prettify())
+        # f.close()
+        # f = open(os.path.join(BASE_PATH, 'report/result.html'), 'r',encoding='UTF-8')
+        # content = f.read()
+        # f.close()
         # content ='此次接口测试个数为%d，通过数为%d,通过率为%s,失败率为%s'%(count_num, pass_num, pass_result, fail_result)
         self.send_email(user_list, sub, content)

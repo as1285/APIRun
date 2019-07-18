@@ -1,7 +1,6 @@
 import unittest
-import ddt
+
 import os
-import requests
 import  run
 import ddt
 from common import readexcel

@@ -56,4 +56,3 @@ if __name__ == '__main__':
     rows_count = GetData().get_case_lines()
     for i in range(1,rows_count):
         run.go_on_run(i)
-    SendEmail().send_main(run.pass_count, run.fail_count)
