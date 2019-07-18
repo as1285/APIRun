@@ -35,5 +35,5 @@ password = 'ikcwnwolsdzjbicf'#邮箱的smtp验证码,不是 邮箱密码
 # email_host = 'smtp.mxhichina.com'
 # send_user = 'test@xfxb.net'
 # password = 'xfxb@2019'#邮箱的smtp验证码,不是 邮箱密码
-user_list = ['dong1285@126.com','dong1285@qq.com','dong.tang@xfxb.net']#收件人列表，后面用;隔开
+user_list = ['dong1285@126.com','dong.tang@xfxb.net',]#收件人列表，后面用;隔开
 

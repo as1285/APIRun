@@ -64,11 +64,11 @@ class SendEmail:
         f = open(os.path.join(BASE_PATH, 'report/result.html'), 'r',encoding='UTF-8')
         content = f.read()
         f.close()
-        soup = BeautifulSoup(content, 'html5lib')
-        soup.find('p', id='show_detail_line').decompose()
-        links = soup.find_all('a')
-        for n in links:
-            n.decompose()
+        # soup = BeautifulSoup(content, 'html5lib')
+        # soup.find('p', id='show_detail_line').decompose()
+        # links = soup.find_all('a')
+        # for n in links:
+        #     n.decompose()
         # f = open(os.path.join(BASE_PATH, 'report/result.html'), 'w',encoding='UTF-8')
         # f.write(soup.prettify())
         # f.close()
