@@ -33,5 +33,4 @@ def run_case(all_case, reportpath=report_path):
 if __name__ == "__main__":
     cases = add_case()
     run_case(cases)
-
-    SendEmail().send_main()
+    # SendEmail().send_main()
