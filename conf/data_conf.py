@@ -18,6 +18,8 @@ def get_id():
     return global_var.Id
 def get_client_type():
     return global_var.client_type
+def get_case_name():
+    return global_var.request_name
 def get_host():
     return global_var.host
 def get_api():

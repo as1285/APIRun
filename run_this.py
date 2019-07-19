@@ -2,6 +2,7 @@ import unittest
 import HTMLTestRunner_api
 import os
 from conf.send_email import SendEmail
+from conf.settings import *
 
 curpath = os.path.dirname(os.path.realpath(__file__))
 report_path = os.path.join(curpath, "report")
@@ -33,4 +34,4 @@ def run_case(all_case, reportpath=report_path):
 if __name__ == "__main__":
     cases = add_case()
     run_case(cases)
-    # SendEmail().send_main()
+    SendEmail().send_main()

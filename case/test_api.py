@@ -1,16 +1,14 @@
 import unittest
-
 import os
 import  run
 import ddt
 from common import readexcel
 from common import writeexcel
-from conf.send_email import SendEmail
-
+from conf.settings import *
 
 # 获取case.xls路径
 curpath = os.path.dirname(os.path.realpath(__file__))
-testxlsx = os.path.join(curpath, "case.xls")
+testxlsx = TESTCASE_PATH
 
 # 复制case.xls文件到report下
 report_path = os.path.join(os.path.dirname(curpath), "report")
@@ -18,6 +16,7 @@ reportxlsx = os.path.join(report_path, "result.xls")
 testdata = readexcel.ExcelUtil(testxlsx).dict_data()
 @ddt.ddt
 class Test_api(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
 
@@ -29,10 +28,6 @@ class Test_api(unittest.TestCase):
             run.RunTest().go_on_run(data['rowNum'])
 
 
-
-
-
-
 if __name__ == "__main__":
     unittest.main()
-    SendEmail().send_main()
+

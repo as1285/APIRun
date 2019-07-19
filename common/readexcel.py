@@ -28,7 +28,7 @@ class ExcelUtil():
             return r
 
 if __name__ == "__main__":
-    filepath = "D:/dong/APIRun/case/case.xls"
+    filepath = "D:/APIRun/conf/case.xls"
     sheetName = "Sheet1"
     data = ExcelUtil(filepath, sheetName)
     print(data.dict_data())

@@ -1,8 +1,10 @@
 import os
 # 获取项目路径
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(BASE_PATH)
 # 定义测试用例的路径
-TESTCASE_PATH =  os.path.join(BASE_PATH,'case/case.xls')
+TESTCASE_PATH =  BASE_PATH+'\conf\case.xls'
+print(TESTCASE_PATH)
 # 定义测报告的路径
 REPORT_PATH =  os.path.join(BASE_PATH,'report/')
 # 定义日志文件的路径

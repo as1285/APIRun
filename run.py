@@ -4,11 +4,9 @@ from common.get_data import GetData
 from common.assert_result import CommonUtil
 import json
 from common.depend_data import DependdentData
-from conf.send_email import SendEmail
+
 from conf.set_token import Get_Token
-from time import sleep
-from conf import base_email
-import os
+
 class RunTest:
     pass_count = []
     fail_count = []
@@ -25,8 +23,9 @@ class RunTest:
         if is_run:
             url = Get_Token().get_url(client_type=GetData().get_client_type(i),api=GetData().get_api(i))
             method = GetData().get_request_method(i)
+            case_name =GetData().get_case_name(i)
             data = GetData().get_data(i)
-            print(url,data,method)
+            # print(url,data,method)
             data = json.loads(data)
             header = Get_Token().get_header(i)
             expect = GetData().get_expect_data(i)
@@ -47,7 +46,7 @@ class RunTest:
             else:
                 GetData().write_result(i, res.text)
                 self.fail_count.append(i)
-
+            return[i,case_name,method,url,data,expect,res.text]
 
 
 

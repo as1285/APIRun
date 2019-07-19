@@ -1,614 +1,297 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-    <title>测试报告</title>
-    <meta name="generator" content="HTMLTestRunner 0.8.3"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    
-<style type="text/css" media="screen">
-body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
-table       { font-size: 100%; }
-pre         { }
-
-/* -- heading ---------------------------------------------------------------------- */
-h1 {
-	font-size: 16pt;
-	color: gray;
-}
-.heading {
-    margin-top: 0ex;
-    margin-bottom: 1ex;
-}
-
-.heading .attribute {
-    margin-top: 1ex;
-    margin-bottom: 0;
-}
-
-.heading .description {
-    margin-top: 4ex;
-    margin-bottom: 6ex;
-}
-
-/* -- css div popup ------------------------------------------------------------------------ */
-a.popup_link {
-}
-
-a.popup_link:hover {
-    color: red;
-}
-.img{
-	width: 100%;
-	height: 100%;
-	border-collapse: collapse;
-    border: 2px solid #777;
-}
-
-.screenshots {
-    z-index: 100;
-	position:absolute;
-	left: 23%;
-	top: 20%;
-	display: none;
-}
-.close_shots {
-	position:absolute;
-	top:0; left:98%;
-	z-index:99;
-	width:20px;
-}
-.popup_window {
-    display: none;
-    position: relative;
-    left: 0px;
-    top: 0px;
-    /*border: solid #627173 1px; */
-    padding: 10px;
-    background-color: #E6E6D6;
-    font-family: "Lucida Console", "Courier New", Courier, monospace;
-    text-align: left;
-    font-size: 8pt;
-    width: 500px;
-}
-
-}
-/* -- report ------------------------------------------------------------------------ */
-#show_detail_line {
-    margin-top: 3ex;
-    margin-bottom: 1ex;
-}
-#result_table {
-    width: 80%;
-    border-collapse: collapse;
-    border: 1px solid #777;
-}
-#header_row {
-    font-weight: bold;
-    color: white;
-    background-color: #777;
-}
-#result_table td {
-    border: 1px solid #777;
-    padding: 2px;
-}
-#total_row  { font-weight: bold; }
-.passClass  { background-color: #6c6; }
-.failClass  { background-color: #c60; }
-.errorClass { background-color: #c00; }
-.passCase   { color: #6c6; }
-.failCase   { color: #c60; font-weight: bold; }
-.errorCase  { color: #c00; font-weight: bold; }
-.hiddenRow  { display: none; }
-.testcase   { margin-left: 2em; }
-
-
-/* -- ending ---------------------------------------------------------------------- */
-#ending {
-}
-
-
-.piechart{
-    position:absolute;  ;
-    top:20px;
-    left:300px;
-    width: 200px;
-    float: left;
-    display:  inline;
-}
-
-
-</style>
-
+	<title>http接口自动化测试报告</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入 Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .hidden-detail,.hidden-tr{
+            display:none;
+        }
+    </style>
 </head>
 <body>
-<script language="javascript" type="text/javascript">
-output_list = Array();
-
-/* level - 0:Summary; 1:Failed; 2:All */
-function showCase(level) {
-    trs = document.getElementsByTagName("tr");
-    for (var i = 0; i < trs.length; i++) {
-        tr = trs[i];
-        id = tr.id;
-        if (id.substr(0,2) == 'ft') {
-            if (level < 1) {
-                tr.className = 'hiddenRow';
-            }
-            else {
-                tr.className = '';
-            }
-        }
-        if (id.substr(0,2) == 'pt') {
-            if (level > 1) {
-                tr.className = '';
-            }
-            else {
-                tr.className = 'hiddenRow';
-            }
-        }
-    }
-}
-
-
-function showClassDetail(cid, count) {
-    var id_list = Array(count);
-    var toHide = 1;
-    for (var i = 0; i < count; i++) {
-        tid0 = 't' + cid.substr(1) + '.' + (i+1);
-        tid = 'f' + tid0;
-        tr = document.getElementById(tid);
-        if (!tr) {
-            tid = 'p' + tid0;
-            tr = document.getElementById(tid);
-        }
-        id_list[i] = tid;
-        if (tr.className) {
-            toHide = 0;
-        }
-    }
-    for (var i = 0; i < count; i++) {
-        tid = id_list[i];
-        if (toHide) {
-            document.getElementById('div_'+tid).style.display = 'none'
-            document.getElementById(tid).className = 'hiddenRow';
-        }
-        else {
-            document.getElementById(tid).className = '';
-        }
-    }
-}
-
-
-function showTestDetail(div_id){
-    var details_div = document.getElementById(div_id)
-    var displayState = details_div.style.display
-    // alert(displayState)
-    if (displayState != 'block' ) {
-        displayState = 'block'
-        details_div.style.display = 'block'
-    }
-    else {
-        details_div.style.display = 'none'
-    }
-}
-
-
-function html_escape(s) {
-    s = s.replace(/&/g,'&amp;');
-    s = s.replace(/</g,'&lt;');
-    s = s.replace(/>/g,'&gt;');
-    return s;
-}
-
-function drawCircle(pass, fail, error){
-    var color = ["#6c6","#c60","#c00"];
-    var data = [pass,fail,error];
-    var text_arr = ["pass", "fail", "error"];
-
-    var canvas = document.getElementById("circle");
-    var ctx = canvas.getContext("2d");
-    var startPoint=0;
-    var width = 20, height = 10;
-    var posX = 112 * 2 + 20, posY = 30;
-    var textX = posX + width + 5, textY = posY + 10;
-    for(var i=0;i<data.length;i++){
-        ctx.fillStyle = color[i];
-        ctx.beginPath();
-        ctx.moveTo(112,84);
-        ctx.arc(112,84,84,startPoint,startPoint+Math.PI*2*(data[i]/(data[0]+data[1]+data[2])),false);
-        ctx.fill();
-        startPoint += Math.PI*2*(data[i]/(data[0]+data[1]+data[2]));
-        ctx.fillStyle = color[i];
-        ctx.fillRect(posX, posY + 20 * i, width, height);
-        ctx.moveTo(posX, posY + 20 * i);
-        ctx.font = 'bold 14px';
-        ctx.fillStyle = color[i];
-        var percent = text_arr[i] + ":"+data[i];
-        ctx.fillText(percent, textX, textY + 20 * i);
-
-    }
-}
-
-function show_shots(obj) {
-	obj.nextElementSibling.style.display="block";
-
-}
-
-function close_shots(obj) {
-	obj.parentElement.style.display="none";
-}
-
+	
+<div  class='col-md-4 col-md-offset-4' style='margin-left:3%;'>
+<h1>接口测试的结果</h1>
+    <table  class="table table-hover table-condensed">
+            <tbody>
+                <tr>
+		<td><strong>开始时间:</strong> 2019-07-19 17:48:04.474600</td>
+		</tr>
+		<td><strong>结束时间:</strong> 2019-07-19 17:48:06.896600</td></tr>
+		<td><strong>耗时:</strong> 0:00:02.422000</td></tr>
+		<td><strong>结果:</strong>
+			<span >Pass: <strong >4</strong>
+			Fail: <strong >5</strong>
+			       exception: <strong >['操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功', '操作成功']</strong> 
+			       weizhicuowu : <strong >1</strong></span></td>                  
+			   </tr> 
+			   </tbody></table>
+			   </div> <div class="row " style="margin:60px">
+        <div style='    margin-top: 18%;' >
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" id="check-all" class="btn btn-primary">所有用例</button>
+            <button type="button" id="check-success" class="btn btn-success">成功用例</button>
+            <button type="button" id="check-danger" class="btn btn-danger">失败用例</button>
+            <button type="button" id="check-warning" class="btn btn-warning">错误用例</button>
+            <button type="button" id="check-except" class="btn btn-defult">异常用例</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="...">
+        </div>
+        <table class="table table-hover table-condensed table-bordered" style="word-wrap:break-word; word-break:break-all;  margin-top: 7px;">
+		<tr >
+            <td ><strong>用例ID&nbsp;</strong></td>
+            <td><strong>用例名字</strong></td>
+            <td><strong>key</strong></td>
+            <td><strong>请求内容</strong></td>
+            <td><strong>url</strong></td>
+            <td><strong>请求方式</strong></td>
+            <td><strong>预期</strong></td>
+            <td><strong>实际返回</strong></td>  
+            <td><strong>结果</strong></td>
+        </tr>
+     
+        <tr class="case-tr warning">
+            <td>16</td>
+            <td>提交订单</td>
+            <td>0</td>
+            <td>{'deliveryType': '2', 'deliveryTime': '2019-07-17 17:30', 'buyerId': '550314108797157376', 'orderItemList': [{'productItemNo': '1_P02157_K03026', 'unitPrice': '90', 'quantity': '1'}], 'buyerRemark': '', 'promotionList': [], 'postAmount': '0', 'buyerAddressId': '569912719516123136', 'shopId': '588796810424397824', 'buyerPhone': '18813910402', 'orderReachedGiveParamList': [], 'invoice': {}, 'clientInfo': {}}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V2.0.0/submit</td>
+            <td>post</td>
+            <td>操作成功</td>
+            <td>{"data":{"orderItemList":[],"orderAmount":0,"postAmount":0,"showOrderItemList":[],"soldOutList":[],"offlineProductList":[],"priceChangeProductList":[]},"message":"店铺已停止营业","code":12011}</td>
+            <td bgcolor="fail">fail</td>
+        </tr>
+    
+        <tr class="case-tr warning">
+            <td>17</td>
+            <td>余额支付</td>
+            <td>1</td>
+            <td>{'orderId': None, 'payType': 1}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getPayInfo</td>
+            <td>post</td>
+            <td>操作成功</td>
+            <td>{"message":"[orderId]订单id不能为空;","code":1019}</td>
+            <td bgcolor="fail">fail</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>29</td>
+            <td>获取账户余额</td>
+            <td>2</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/members/userApp/member/V1.0.0/getBalanceInfo</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"totalAmount":985743,"availableAmount":0,"donationAmount":985743,"modifyPwdFlag":1},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>30</td>
+            <td>查看用户信息</td>
+            <td>3</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/authc/userApp/memberInfo/V1.0.0/view</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"id":596037493459685376,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/SicbFZiaSUwz9iaUz9twr6TtnXy7vPAHR4seeI4YJcznIEjyWH9txm9NPo1kzJtEQXg1sSpyNmXic5IP4vWpwskMEA/132","gender":1,"mobile":"13267166832","nickname":"晨曦","bindWx":1,"name":""},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>31</td>
+            <td>查看未读消息 </td>
+            <td>4</td>
+            <td>{'readStatus': 0, 'clientId': '5', 'receiver': 596037493459685376}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/mmc/userApp/pushInfo/V1.0.0/countNotRead</td>
+            <td>post</td>
+            <td>操作成功</td>
+            <td>{"data":0,"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>32</td>
+            <td>修改性别</td>
+            <td>5</td>
+            <td>{'gender': 1}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/authc/userApp/memberInfo/V1.0.0/update</td>
+            <td>post</td>
+            <td>操作成功</td>
+            <td>{"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>35</td>
+            <td>获取付款码</td>
+            <td>6</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/members/userApp/member/V1.0.0/generateMemberCode</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"memberCode":"M601832645516247040","startTime":"2019-07-19 17:48:04","expireSecond":300},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>36</td>
+            <td>查看充值记录</td>
+            <td>7</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/activity/userApp/rechargeRecord/V1.0.0/findPage?pageNum=1&pageSize=10</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"pageNum":1,"pageSize":10,"size":1,"total":1,"pages":1,"list":[{"id":"596037965948010496","payNo":"RC20190703180204931416","rechargeTime":"2019-07-03 18:02:14","rechargeAmount":"1","donationAmount":1000000,"totalAmount":1000001,"payType":2,"payTypeName":"微信支付","invoiceUrl":"https://retailh5-qa002.blissmall.net/invoice/#/596037965948010496/2"}]},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>37</td>
+            <td>查看会员充值界面</td>
+            <td>8</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/activity/userApp/rechargeRecord/V1.0.0/rechargeLabel/find</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":[{"rechargeRuleId":"596025658450788352","ruleName":"充0.01送10000","labelContent":"0.01","rechargeAmount":"1","givenAmount":"1000000","firstRecharge":"0"}],"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>40</td>
+            <td>查看使用优惠劵列表</td>
+            <td>9</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/activity/userApp/activity/V1.0.0/findMyCoupons?couponScopeType=0&pageNum=1&pageSize=10&status=0</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"pageNum":1,"pageSize":10,"size":0,"total":0,"pages":1,"list":[]},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>41</td>
+            <td>查看待领取优惠劵列表</td>
+            <td>10</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/activity/userApp/activity/V2.0.0/findUserGiveCoupons?pageNum=1&pageSize=10</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":[{"id":"601829200776302592","activityName":"test","refCouponName":"包括：mjy1235张"}],"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>42</td>
+            <td>查看已使用优惠劵列表</td>
+            <td>11</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/activity/userApp/activity/V1.0.0/findMyCoupons?couponScopeType=0&pageNum=1&pageSize=10&status=1</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"pageNum":1,"pageSize":10,"size":0,"total":0,"pages":1,"list":[]},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>43</td>
+            <td>查看已失效优惠劵列表</td>
+            <td>12</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/activity/userApp/activity/V1.0.0/findMyCoupons?couponScopeType=0&pageNum=1&pageSize=10&status=2</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"pageNum":1,"pageSize":10,"size":10,"total":47,"pages":1,"list":[{"couponId":"596209332186169344","couponName":"8.008","couponType":"1","effectStartDate":"2019.07.04","effectEndDate":"2019.07.04","couponAmount":997,"couponDiscount":"0","useExplain":"","couponLimit":"无限制"},{"couponId":"596207420594372608","couponName":"233","couponType":"2","effectStartDate":"2019.07.04","effectEndDate":"2019.07.05","couponAmount":0,"couponDiscount":"8.9","useExplain":".","couponLimit":"无限制"},{"couponId":"596207420594372608","couponName":"233","couponType":"2","effectStartDate":"2019.07.04","effectEndDate":"2019.07.05","couponAmount":0,"couponDiscount":"8.9","useExplain":".","couponLimit":"无限制"},{"couponId":"596207420594372608","couponName":"233","couponType":"2","effectStartDate":"2019.07.04","effectEndDate":"2019.07.05","couponAmount":0,"couponDiscount":"8.9","useExplain":".","couponLimit":"无限制"},{"couponId":"594219049735057408","couponName":"组合商品-全单打","couponType":"2","effectStartDate":"2019.06.28","effectEndDate":"2019.07.05","couponAmount":0,"couponDiscount":"5","useExplain":"","couponLimit":"满1.00元使用、限部分商品"},{"couponId":"594219049735057408","couponName":"组合商品-全单打","couponType":"2","effectStartDate":"2019.06.28","effectEndDate":"2019.07.05","couponAmount":0,"couponDiscount":"5","useExplain":"","couponLimit":"满1.00元使用、限部分商品"},{"couponId":"594220032271740928","couponName":"满2元减1元","couponType":"1","effectStartDate":"2019.06.28","effectEndDate":"2019.07.18","couponAmount":100,"couponDiscount":"0","useExplain":"","couponLimit":"满2.00元使用、限部分商品"},{"couponId":"594220032271740928","couponName":"满2元减1元","couponType":"1","effectStartDate":"2019.06.28","effectEndDate":"2019.07.18","couponAmount":100,"couponDiscount":"0","useExplain":"","couponLimit":"满2.00元使用、限部分商品"},{"couponId":"594220032271740928","couponName":"满2元减1元","couponType":"1","effectStartDate":"2019.06.28","effectEndDate":"2019.07.18","couponAmount":100,"couponDiscount":"0","useExplain":"","couponLimit":"满2.00元使用、限部分商品"},{"couponId":"594219241284726784","couponName":"组合商品-三件五折","couponType":"2","effectStartDate":"2019.06.28","effectEndDate":"2019.07.18","couponAmount":0,"couponDiscount":"5","useExplain":"","couponLimit":"满1.00元使用、限部分商品"}]},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>44</td>
+            <td>查看未使用商品兑换劵列表</td>
+            <td>13</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/activity/userApp/activity/V1.0.0/findMyCoupons?couponScopeType=1&pageNum=1&pageSize=10&status=0</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"pageNum":1,"pageSize":10,"size":0,"total":0,"pages":1,"list":[]},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>45</td>
+            <td>查看已使用优惠劵列表</td>
+            <td>14</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/activity/userApp/activity/V1.0.0/findMyCoupons?couponScopeType=1&pageNum=1&pageSize=10&status=1</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"pageNum":1,"pageSize":10,"size":0,"total":0,"pages":1,"list":[]},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>46</td>
+            <td>查看已失效优惠劵列表</td>
+            <td>15</td>
+            <td>{}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/activity/userApp/activity/V1.0.0/findMyCoupons?couponScopeType=1&pageNum=1&pageSize=10&status=2</td>
+            <td>get</td>
+            <td>操作成功</td>
+            <td>{"data":{"pageNum":1,"pageSize":10,"size":0,"total":0,"pages":1,"list":[]},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    
+        <tr class="case-tr success">
+            <td>47</td>
+            <td>版本更新</td>
+            <td>16</td>
+            <td>{'position': 2, 'client': 2, 'type': 4, 'versionNo': 'v2.0.0'}</td>
+            <td>https://rtapi-qa002.blissmall.net/apis/baseinfo/anon/appversion/V1.0.0/findVersion</td>
+            <td>post</td>
+            <td>操作成功</td>
+            <td>{"data":{"needRefresh":"0"},"message":"操作成功","code":0}</td>
+            <td bgcolor="green">pass</td>
+        </tr>
+    </div></div></table><script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$("#check-danger").click(function(e){
+	    $(".case-tr").removeClass("hidden-tr");
+        $(".success").addClass("hidden-tr");
+        $(".warning").addClass("hidden-tr");
+        $(".error").addClass("hidden-tr");
+	});
+	$("#check-warning").click(function(e){
+		 $(".case-tr").removeClass("hidden-tr");
+        $(".success").addClass("hidden-tr");
+        $(".danger").addClass("hidden-tr");
+        $(".error").addClass("hidden-tr");
+	});
+	$("#check-success").click(function(e){
+		 $(".case-tr").removeClass("hidden-tr");
+        $(".warning").addClass("hidden-tr");
+        $(".danger").addClass("hidden-tr");
+        $(".error").addClass("hidden-tr");
+	});
+	$("#check-except").click(function(e){
+		 $(".case-tr").removeClass("hidden-tr");
+        $(".warning").addClass("hidden-tr");
+        $(".danger").addClass("hidden-tr");
+        $(".success").addClass("hidden-tr");
+	});
+	$("#check-all").click(function(e){
+	    $(".case-tr").removeClass("hidden-tr");
+	});
 </script>
-<div class="piechart">
-    <div>
-        <canvas id="circle" width="350" height="168" </canvas>
-    </div>
-</div>
-<div class='heading'>
-<h1>测试报告</h1>
-<p class='attribute'><strong>开始时间:</strong> 2019-07-18 14:25:27</p>
-<p class='attribute'><strong>耗时:</strong> 0:00:01.651000</p>
-<p class='attribute'><strong>状态:</strong> <span class="tj passCase">Pass</span>25</p>
-
-<p class='description'>用例执行情况</p>
-</div>
-
-
-
-<p id='show_detail_line'>显示
-<a href='javascript:showCase(0)'>概要</a>
-<a href='javascript:showCase(1)'>失败</a>
-<a href='javascript:showCase(2)'>所有</a>
-</p>
-
-<table id='result_table'>
-<colgroup>
-<col align='left' />
-<col align='right' />
-<col align='right' />
-<col align='right' />
-<col align='right' />
-<col align='right' />
-<col align='right' />
-</colgroup>
-<tr id='header_row'>
-    <td>测试组/测试用例</td>
-    <td>总数</td>
-    <td>通过</td>
-    <td>失败</td>
-    <td>错误</td>
-    <td>视图</td>
-    <td>错误截图</td>
-</tr>
-
-<tr class='passClass'>
-    <td>test_api.Test_api</td>
-    <td>25</td>
-    <td>25</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c1',25)">详情</a></td>
-    <td>&nbsp;</td>
-</tr>
-
-<tr id='pt1.1' class='hiddenRow'>
-    <td><div class='testcase'>test_api_01</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.2' class='hiddenRow'>
-    <td><div class='testcase'>test_api_02</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.3' class='hiddenRow'>
-    <td><div class='testcase'>test_api_03</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.4' class='hiddenRow'>
-    <td><div class='testcase'>test_api_04</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.5' class='hiddenRow'>
-    <td><div class='testcase'>test_api_05</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.6' class='hiddenRow'>
-    <td><div class='testcase'>test_api_06</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.7' class='hiddenRow'>
-    <td><div class='testcase'>test_api_07</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.8' class='hiddenRow'>
-    <td><div class='testcase'>test_api_08</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.9' class='hiddenRow'>
-    <td><div class='testcase'>test_api_09</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.10' class='hiddenRow'>
-    <td><div class='testcase'>test_api_10</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.11' class='hiddenRow'>
-    <td><div class='testcase'>test_api_11</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.12' class='hiddenRow'>
-    <td><div class='testcase'>test_api_12</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.13' class='hiddenRow'>
-    <td><div class='testcase'>test_api_13</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.14' class='hiddenRow'>
-    <td><div class='testcase'>test_api_14</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.15' class='hiddenRow'>
-    <td><div class='testcase'>test_api_15</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.16' class='hiddenRow'>
-    <td><div class='testcase'>test_api_16</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.17' class='hiddenRow'>
-    <td><div class='testcase'>test_api_17</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.18' class='hiddenRow'>
-    <td><div class='testcase'>test_api_18</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.19' class='hiddenRow'>
-    <td><div class='testcase'>test_api_19</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='pt1.20' class='hiddenRow'>
-    <td ><div class='testcase'>test_api_20</div></td>
-    <td colspan='5' align='center'>
-
-    <!--css div popup start-->
-    <span class='status passCase'>
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.20')" >
-        通过</a></span>
-
-    <div id='div_pt1.20' class="popup_window">
-        <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.20').style.display = 'none' " >
-           [x]</a>
-        </div>
-        <pre>
-        
-pt1.20: https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= {
-                    "orderId": ""
-                  
-                } get
-app
-APP登录失败
-app
-获取依赖参数成功： 599273516104822784
-1 https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= {'orderId': '', None: '599273516104822784'}
-https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= 1
-1 https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= {'orderId': '', None: '599273516104822784'}
-https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= 1
-
-
-        </pre>
-    </div>
-    <!--css div popup end-->
-
-    </td>
-    <td></td>
-</tr>
-
-<tr id='pt1.21' class='hiddenRow'>
-    <td ><div class='testcase'>test_api_21</div></td>
-    <td colspan='5' align='center'>
-
-    <!--css div popup start-->
-    <span class='status passCase'>
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.21')" >
-        通过</a></span>
-
-    <div id='div_pt1.21' class="popup_window">
-        <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.21').style.display = 'none' " >
-           [x]</a>
-        </div>
-        <pre>
-        
-pt1.21: https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/cancel {
-                    "orderId": ""
-                  
-                } post
-app
-app
-获取依赖参数成功： 599273516104822784
-
-
-        </pre>
-    </div>
-    <!--css div popup end-->
-
-    </td>
-    <td></td>
-</tr>
-
-<tr id='pt1.22' class='hiddenRow'>
-    <td ><div class='testcase'>test_api_22</div></td>
-    <td colspan='5' align='center'>
-
-    <!--css div popup start-->
-    <span class='status passCase'>
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.22')" >
-        通过</a></span>
-
-    <div id='div_pt1.22' class="popup_window">
-        <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.22').style.display = 'none' " >
-           [x]</a>
-        </div>
-        <pre>
-        
-pt1.22: https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= {
-                    "orderId": ""
-                  
-                } get
-app
-app
-获取依赖参数成功： 599273516104822784
-1 https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= {'orderId': '', None: '599273516104822784'}
-https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= 1
-1 https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= {'orderId': '', None: '599273516104822784'}
-https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= 1
-
-
-        </pre>
-    </div>
-    <!--css div popup end-->
-
-    </td>
-    <td></td>
-</tr>
-
-<tr id='pt1.23' class='hiddenRow'>
-    <td ><div class='testcase'>test_api_23</div></td>
-    <td colspan='5' align='center'>
-
-    <!--css div popup start-->
-    <span class='status passCase'>
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.23')" >
-        通过</a></span>
-
-    <div id='div_pt1.23' class="popup_window">
-        <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.23').style.display = 'none' " >
-           [x]</a>
-        </div>
-        <pre>
-        
-pt1.23: https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= {
-                    "orderId": ""
-                  
-                } get
-app
-app
-获取依赖参数成功： 599273516104822784
-1 https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= {'orderId': '', None: '599273516104822784'}
-https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= 1
-1 https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= {'orderId': '', None: '599273516104822784'}
-https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V1.0.0/getById?orderId= 1
-
-
-        </pre>
-    </div>
-    <!--css div popup end-->
-
-    </td>
-    <td></td>
-</tr>
-
-<tr id='pt1.24' class='hiddenRow'>
-    <td ><div class='testcase'>test_api_24</div></td>
-    <td colspan='5' align='center'>
-
-    <!--css div popup start-->
-    <span class='status passCase'>
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_pt1.24')" >
-        通过</a></span>
-
-    <div id='div_pt1.24' class="popup_window">
-        <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_pt1.24').style.display = 'none' " >
-           [x]</a>
-        </div>
-        <pre>
-        
-pt1.24: https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V2.0.0/findRefund?orderId= {
-                    "orderId": ""
-                  
-                } get
-app
-app
-获取依赖参数成功： 599273516104822784
-1 https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V2.0.0/findRefund?orderId= {'orderId': '', None: '599273516104822784'}
-https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V2.0.0/findRefund?orderId= 1
-1 https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V2.0.0/findRefund?orderId= {'orderId': '', None: '599273516104822784'}
-https://rtapi-qa002.blissmall.net/apis/trade/userApp/order/V2.0.0/findRefund?orderId= 1
-
-
-        </pre>
-    </div>
-    <!--css div popup end-->
-
-    </td>
-    <td></td>
-</tr>
-
-<tr id='pt1.25' class='hiddenRow'>
-    <td><div class='testcase'>test_api_25</div></td>
-    <td colspan='5' align='center'><span class='status passCase'>通过</span></td>
-    <td></td>
-</tr>
-
-<tr id='total_row'>
-    <td>统计</td>
-    <td>25</td>
-    <td>25</td>
-    <td>0</td>
-    <td>0</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-</table>
-<script>
-    drawCircle(25, 0, 0)
-</script>
-
-<div id='ending'>&nbsp;</div>
-
-</body>
-</html>
+</body></html>

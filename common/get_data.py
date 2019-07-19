@@ -18,6 +18,11 @@ class GetData:
         else:
             flag = False
         return flag
+    #获取case名称
+    def get_case_name(self,row):
+        col = data_conf.get_case_name()
+        case_name = self.operation_excel.get_cell_value(row, col)
+        return case_name
     #获取请求方法
     def get_request_method(self,row):
         col = data_conf.get_runway()

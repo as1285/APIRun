@@ -61,7 +61,7 @@ class SendEmail:
         user_list = self.user_list
         # 邮件正文内容
         sub = '这是一封测试邮件'
-        f = open(os.path.join(BASE_PATH, 'report/result.html'), 'r',encoding='UTF-8')
+        f = open(os.path.join(BASE_PATH,'report/result.html'), 'r',encoding='UTF-8')
         content = f.read()
         f.close()
         # soup = BeautifulSoup(content, 'html5lib')
