@@ -1,7 +1,6 @@
 import unittest
 import HTMLTestRunner_api
 import os
-from conf.send_email import SendEmail
 from conf.settings import *
 
 curpath = os.path.dirname(os.path.realpath(__file__))
@@ -11,7 +10,6 @@ case_path = os.path.join(curpath, "case")
 
 def add_case(casepath=case_path, rule="test*.py"):
     '''加载所有的测试用例'''
-    # 定义discover方法的参数
     discover = unittest.defaultTestLoader.discover(casepath,
                                                   pattern=rule,)
     return discover
@@ -26,12 +24,9 @@ def run_case(all_case, reportpath=report_path):
                                                verbosity=2,
                                                title="测试报告",
                                                description="用例执行情况")
-
-    # 调用add_case函数返回值
     runner.run(all_case)
     fp.close()
 
 if __name__ == "__main__":
     cases = add_case()
     run_case(cases)
-    SendEmail().send_main()
